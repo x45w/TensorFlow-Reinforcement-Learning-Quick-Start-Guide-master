@@ -98,8 +98,8 @@ for ep in range(iter_num, EP_MAX):
        
         env.render()  # 渲染环境，可视化智能体与环境的交互过程，方便观察算法的运行情况。
 
-        # sticky actions
-        #if (t == 0 or np.random.uniform() < 0.125): 
+        # sticky actions 粘性动作
+        #if (t == 0 or np.random.uniform() < 0.125):  # 当前时间步数为0，表示回合的第一个时间步。随机数小于0.125，以一定概率选择执行特定动作
         if (t % 8 ==0):  # 每隔8个时间步长进行一次动作选择。因为短时间内汽车可能不会显著移动，此处使用粘性操作。同时可以控制选择动作的频率。
           a = ppo.choose_action(s) 
 
