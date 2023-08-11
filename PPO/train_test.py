@@ -171,6 +171,8 @@ for ep in range(iter_num, EP_MAX):
     if (train_test == 0):  # 训练模式下
       with open("performance.txt", "a") as myfile:  # 打开文件，以追加的方法
            # 将当前回合的索引、累积奖励、最大位置和最大速速信息以一定的格式写入文件中。每一行数据包括回合索引、累积奖励、最大位置和最大速速，以空格分隔。
+           # str(ep)：将回合索引 ep 转换为字符串。
+           # str(round(ep_r,4))将浮点数值 ep_r 进行四舍五入并转换为保留四位小数的字符串形式。
         myfile.write(str(ep) + " " + str(round(ep_r,4)) + " " + str(round(max_pos,4)) + " " + str(round(max_speed,4)) + "\n")
 
     if (train_test == 0 and ep%10 == 0):  # 判断是否在训练模式下，且当前回合索引是10的倍数
