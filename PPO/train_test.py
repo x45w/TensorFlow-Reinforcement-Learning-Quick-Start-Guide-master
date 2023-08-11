@@ -107,13 +107,13 @@ for ep in range(iter_num, EP_MAX):
         a += 0.1 * np.random.randn()  # 在选择的动作上添加一个小的随机噪声，以鼓励探索不同的动作策略。
 
         # clip
-        a = np.clip(a, -1.0, 1.0)
+        a = np.clip(a, -1.0, 1.0)  # 将动作a剪切到范围[-1.0, 1.0]，确保动作值在合理范围内。
 
         # take step  
-        s_, r, done, _ = env.step(a)
+        s_, r, done, _ = env.step(a)  # 执行动作a与环境交互，获取下一个状态s_、r、是否结束标志 done以及其他信息。
        
-        if s_[0] > 0.4:
-            print("nearing flag: ", s_, a) 
+        if s_[0] > 0.4:  # 条件检查，用于检查s_的第一个元素。如果状态的第一个元素超过一定阈值。
+            print("nearing flag: ", s_, a)   # 打印相关信息，可能用于在达到特定条件时输出调试信息。
 
         if s_[0] > 0.45:
           print("reached flag on mountain! ", s_, a) 
@@ -125,10 +125,10 @@ for ep in range(iter_num, EP_MAX):
         if train_test == 0:
           r += reward_shaping(s_)
 
-        if s_[0] > max_pos:
-           max_pos = s_[0]
-        if s_[1] > max_speed:
-           max_speed = s_[1]   
+        if s_[0] > max_pos:  #  检查状态s_ 的第一个元素是否大于之前跟踪的最大位置
+           max_pos = s_[0]   # 如果是，更新最大位置
+        if s_[1] > max_speed:  # 检查状态s_的第二个元素是否大于之前跟踪的最大速度
+           max_speed = s_[1]  # 如果是，更新最大速度
 
 
         if (train_test == 0):
