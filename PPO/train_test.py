@@ -140,18 +140,19 @@ for ep in range(iter_num, EP_MAX):
         ep_r += r  # 将当前时间步获得的奖励r累积到当前回合的累积奖励ep_r，以记录整个回合的累积奖励
         t += 1  # 将时间步数变量t增加1，表示经过了一个时间步。
 
-        if (train_test == 0):
-          if (t+1) % BATCH == 0 or done == True:
-              v_s_ = ppo.get_v(s_)
-              discounted_r = []
-              for r in buffer_r[::-1]:
-                  v_s_ = r + GAMMA * v_s_
-                  discounted_r.append(v_s_)
-              discounted_r.reverse()
+        # 训练模式下执行一些批量数据的训练和策略更新操作。
+        if (train_test == 0):  # 是否在训练模式下
+          if (t+1) % BATCH == 0 or done == True: # 样本数量等于一批量，或者回合已经结束，可以进行批量数据的训练。当前时间步数加1除以批量大小BATCH的余数为0，表示达到了一个批次的大小。
+              v_s_ = ppo.get_v(s_)  # 获取新状态的状态值
+              discounted_r = []  # 初始化一个空列表，用于存储折扣奖励
+              for r in buffer_r[::-1]:  # 对于缓冲区中的每个奖励r(从后往前遍历)
+                  v_s_ = r + GAMMA * v_s_  # 将当前奖励r与下一个状态的状态值相结合，计算折扣奖励，并更新下一个状态的状态值。
+                  discounted_r.append(v_s_)  # 将折扣奖励添加到discounted_r 列表中。
+              discounted_r.reverse()  # 将折扣奖励列表反转，使其与原始数据的顺序一致。
 
-              bs = np.array(np.vstack(buffer_s))
-              ba = np.array(np.vstack(buffer_a))  
-              br = np.array(discounted_r)[:, np.newaxis]
+              bs = np.array(np.vstack(buffer_s))  # 将状态数据从缓冲区的列表转换为Numpy数组，并进行垂直堆叠，得到一个状态数据矩阵。
+              ba = np.array(np.vstack(buffer_a))  # 将动作数据从缓冲区的列表转换为Numpy数组，并进行垂直堆叠，得到一个动作数据矩阵。
+              br = np.array(discounted_r)[:, np.newaxis]  # 将折扣奖励列表转换为 NumPy 数组，并在第二维度添加一个新的维度，得到一个折扣奖励数据的矩阵。
 
               buffer_s, buffer_a, buffer_r = [], [], []
              
