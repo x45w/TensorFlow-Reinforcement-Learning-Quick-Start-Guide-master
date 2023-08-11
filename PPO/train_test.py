@@ -158,22 +158,23 @@ for ep in range(iter_num, EP_MAX):
              
               ppo.update(bs, ba, br)  # 调用ppo类中的update方法，使用批量的状态数据、动作数据和折扣奖励数据来进行策略更新
 
-        if (train_test == 1):
+        if (train_test == 1):  # 测试模式下，暂停程序执行，让程序等待0.1秒。降低测试模式下的执行速度，以便观察智能体与环境的交互过程。
               time.sleep(0.1)
 
-        if (done  == True):
+        if (done  == True):  # 回个结束，打印一些信息。
              print("values at done: ", s_, a)
              break
 
-    print("episode: ", ep, "| episode reward: ", round(ep_r,4), "| time steps: ", t)
-    print("max_pos: ", max_pos, "| max_speed:", max_speed)
+    print("episode: ", ep, "| episode reward: ", round(ep_r,4), "| time steps: ", t)  # 打印当前回合的一些统计信息，包括回合索引、累积奖励（保留四位小数）和时间步数
+    print("max_pos: ", max_pos, "| max_speed:", max_speed)  # 打印当前回合的最大位置和最大速度信息。
 
-    if (train_test == 0):
-      with open("performance.txt", "a") as myfile:
+    if (train_test == 0):  # 训练模式下
+      with open("performance.txt", "a") as myfile:  # 打开文件，以追加的方法
+           # 将当前回合的索引、累积奖励、最大位置和最大速速信息以一定的格式写入文件中。每一行数据包括回合索引、累积奖励、最大位置和最大速速，以空格分隔。
         myfile.write(str(ep) + " " + str(round(ep_r,4)) + " " + str(round(max_pos,4)) + " " + str(round(max_speed,4)) + "\n")
 
-    if (train_test == 0 and ep%10 == 0):
-      saver.save(sess, "ckpt/model")
+    if (train_test == 0 and ep%10 == 0):  # 判断是否在训练模式下，且当前回合索引是10的倍数
+      saver.save(sess, "ckpt/model")  # 将当前会话sess中的模型参数保存搭配指定路径。
 
 
 
