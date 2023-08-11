@@ -51,27 +51,30 @@ CLIP_METHOD = dict(name='clip', epsilon=0.1)
 train_test = 0
 
 # irestart = 0 for fresh restart; =1 for restart from ckpt file
-# irestart控制算法的重启选项。当为0时，进行新的训练启动；当为1时，表示从之前的检查点文件恢复训练
+# irestart控制算法的重启选项。当为0时，进行新的训练启动；当为1时，表示从之前的检查点文件恢复训练，此时迭代次数可能会在检查点文件中加载。
 irestart = 0
 
+# 迭代次数计数，初始化为0
 iter_num = 0
 
+# 启动重启选项，迭代次数设置为0。表示从头开始进行新的训练。
 if (irestart == 0):
   iter_num = 0
 
 #----------------------------------------------------------------------------------------
 
-sess = tf.Session()
+# 创建一个TensorFlow会话，称为sess
+sess = tf.Session()  
 
-ppo = PPO(sess, S_DIM, A_DIM, A_LR, C_LR, A_UPDATE_STEPS, C_UPDATE_STEPS, CLIP_METHOD)
+ppo = PPO(sess, S_DIM, A_DIM, A_LR, C_LR, A_UPDATE_STEPS, C_UPDATE_STEPS, CLIP_METHOD)  # 创建PPO类的一个实例，称为ppo
 
-saver = tf.train.Saver()
+saver = tf.train.Saver()  # 创建一个TensorFlow的存储器
 
 
-if (train_test == 0 and irestart == 0):
-  sess.run(tf.global_variables_initializer())
+if (train_test == 0 and irestart == 0):  # 如果从头开始训练
+  sess.run(tf.global_variables_initializer())  # 初始化所有模型参数
 else:
-  saver.restore(sess, "ckpt/model")  
+  saver.restore(sess, "ckpt/model")  # 从保存的agent继续训练或测试，从ckpt/model路径恢复参数
 
 #----------------------------------------------------------------------------------------
 
@@ -79,10 +82,10 @@ for ep in range(iter_num, EP_MAX):
 
     print("-"*70)
    
-    s = env.reset()
+    s = env.reset()  # 重置环境，并获取初始状态s。表示一个回合的开始。
 
-    buffer_s, buffer_a, buffer_r = [], [], []
-    ep_r = 0
+    buffer_s, buffer_a, buffer_r = [], [], []  # 初始化存储当前回合数据的缓冲区。存储状态、动作和奖励。
+    ep_r = 0  # 当前回合的累积奖励初始化为0
 
     max_pos = -1.0
     max_speed = 0.0
