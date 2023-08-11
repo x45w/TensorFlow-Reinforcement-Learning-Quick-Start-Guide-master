@@ -78,7 +78,7 @@ else:
 
 #----------------------------------------------------------------------------------------
 
-# 在每个训练回合中，初始化状态、缓冲区和一些变量，准备开始与环境交互并收集数据
+# 在每个训练回合中，初始化状态、缓冲区和一些变量，准备开始与环境交互并收集数据。
 for ep in range(iter_num, EP_MAX):
 
     print("-"*70)
@@ -93,17 +93,18 @@ for ep in range(iter_num, EP_MAX):
     done = False  # 初始化标志变量，表示回合是否结束。
     t = 0  # 初始化计时变量。用于跟踪当前回合中的时间步数。
 
+    # 在外循环内部，有随时间步长变化的内部while循环。
     while not done:    
        
-        env.render()
+        env.render()  # 渲染环境，可视化智能体与环境的交互过程，方便观察算法的运行情况。
 
         # sticky actions
         #if (t == 0 or np.random.uniform() < 0.125): 
-        if (t % 8 ==0):
+        if (t % 8 ==0):  # 每隔8个时间步长进行一次动作选择。因为短时间内汽车可能不会显著移动，此处使用粘性操作。同时可以控制选择动作的频率。
           a = ppo.choose_action(s) 
 
         # small noise for exploration
-        a += 0.1 * np.random.randn()  
+        a += 0.1 * np.random.randn()  # 在选择的动作上添加一个小的随机噪声，以鼓励探索不同的动作策略。
 
         # clip
         a = np.clip(a, -1.0, 1.0)
