@@ -130,15 +130,15 @@ for ep in range(iter_num, EP_MAX):
         if s_[1] > max_speed:  # 检查状态s_的第二个元素是否大于之前跟踪的最大速度
            max_speed = s_[1]  # 如果是，更新最大速度
 
-
+        # 如果在训练模式中，状态、动作和奖励会被添加到缓冲区。用于后续的批量数据训练。
         if (train_test == 0):
           buffer_s.append(s)
           buffer_a.append(a)
           buffer_r.append(r)    
 
-        s = s_
-        ep_r += r
-        t += 1
+        s = s_  # 新状态被设置为当前状态
+        ep_r += r  # 将当前时间步获得的奖励r累积到当前回合的累积奖励ep_r，以记录整个回合的累积奖励
+        t += 1  # 将时间步数变量t增加1，表示经过了一个时间步。
 
         if (train_test == 0):
           if (t+1) % BATCH == 0 or done == True:
