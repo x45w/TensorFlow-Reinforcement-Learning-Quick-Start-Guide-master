@@ -1,6 +1,6 @@
-import sys
-import numpy as np
-import gym
+import sys  # 导入系统模块，用于与系统交互和处理输入输出
+import numpy as np  # 用于数值计算和数值操作
+import gym  # 用于创建强化学习环境和进行实验
 
 env = gym.make('MountainCarContinuous-v0')
 
