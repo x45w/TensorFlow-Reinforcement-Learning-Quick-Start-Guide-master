@@ -154,9 +154,9 @@ for ep in range(iter_num, EP_MAX):
               ba = np.array(np.vstack(buffer_a))  # 将动作数据从缓冲区的列表转换为Numpy数组，并进行垂直堆叠，得到一个动作数据矩阵。
               br = np.array(discounted_r)[:, np.newaxis]  # 将折扣奖励列表转换为 NumPy 数组，并在第二维度添加一个新的维度，得到一个折扣奖励数据的矩阵。
 
-              buffer_s, buffer_a, buffer_r = [], [], []
+              buffer_s, buffer_a, buffer_r = [], [], []  # 清空缓冲区，准备收集下一个回合的数据
              
-              ppo.update(bs, ba, br)
+              ppo.update(bs, ba, br)  # 调用ppo类中的update方法，使用批量的状态数据、动作数据和折扣奖励数据来进行策略更新
 
         if (train_test == 1):
               time.sleep(0.1)
