@@ -51,6 +51,7 @@ CLIP_METHOD = dict(name='clip', epsilon=0.1)
 train_test = 0
 
 # irestart = 0 for fresh restart; =1 for restart from ckpt file
+# irestart控制算法的重启选项。当为0时，进行新的训练启动；当为1时，表示从之前的检查点文件恢复训练
 irestart = 0
 
 iter_num = 0
